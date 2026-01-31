@@ -11,7 +11,7 @@ class book
 		std::string bookTitle;
 		std::string bookAuthor;
 		float bookPrice;
-		static int totalBooks;   // in c++ 17, the keyword 'inline' is introduced. Using that we can define  a static variable in a single line; no need for separate declaration and definition. but this is c++14 :(
+		static int totalBooks;   // in c++ 17, the keyword 'inline' is introduced. Using that we can define  a static variable in a single line; no need for separate declaration and definition.
 		
 	public:
 		bool bookAvailable = false;   // book availability flag, false by default for safe-keeping
@@ -53,11 +53,23 @@ class book
 			return totalBooks;
 		}
 		
-//		void setBookPrice(float priceBook)
-//		{
-//			if (priceBook >= 0)
-//			
-//		}
+		void setBookPrice()
+		{
+			float price;
+			std::cout << "\nEnter the price for the book: ";
+			std::cin >> price;
+			
+			while (std::cin.fail())  // the logic:  inside the cin class, theres a fail() method. Its a bool that returns true if cin failed to stored the value inside the given variable. In this case its a float. If a user enters an alphabet, it will throw an error
+			{
+				std::cout << "\nInvalid price!\nTry again.\n";
+				
+				std::cin.clear();    // another method inside cin. it sets the state of cin from 'failed' to 'good'
+				std::cin.ignore(64, '\n');  // again, a method. this ignores the input for a given number of characters (1st argument) or until the delimiter character (2nd argument) is encountered
+				std::cin >> price;   // takes input again
+			}
+			
+			
+		}
 };
 int book::totalBooks = 0;  // definition for static variable
 
@@ -129,7 +141,7 @@ class library
 			std::cout << "Total books in this library: " << book::getTotalBooks() << "\n\n";
 			for (book &i : bookList)
 			{
-				std::cout << i.getBookTitle() << "    |    " << i.getBookAuthor() << "    |    " << i.getBookID() << "    |    " << i.getBookPrice() << "\n\n";
+				std::cout << i.getBookTitle() << "    |    " << i.getBookAuthor() << "    |    " << i.getBookID() << "    |    $ " << i.getBookPrice() << "\n\n";
 			}
 		}
 		
@@ -143,13 +155,17 @@ class library
 		
 		void issueBook(int bookIndex, book &Book, member &Member)  // the index of the book in bookList vetcor is passed
 		{
-				if (Member.getBooksBorrowed() + 1 <= 5)
+			if (Book.bookCopies == 0)
+			{	
+				Book.bookAvailable = false;
+				std::cout << "\nBook is not available!";
+				return;
+			}
+			
+			else if (Book.bookAvailable && Member.getBooksBorrowed() + 1 <= 5)
 				{
 					Member.setBooksBorrowed();
 					Book.bookCopies--;
-					
-					if (Book.bookCopies == 0)
-						Book.bookAvailable = false;
 				}
 		}
 };
@@ -168,6 +184,8 @@ int main()
 	
 	library1.issueBook(1, book1, member1);
 	library1.displayBooks();
+	
+	book1.setBookPrice();
 	
 }
 
