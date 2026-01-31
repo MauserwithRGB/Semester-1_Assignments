@@ -1,5 +1,5 @@
 // OOP Theory assignment:            create 3 classses, implement everything learned so far
-// This is still far from complete, i couldn't complete it in time (2026/01/31 11:59pm). Partially because i added things the question didn't ask for and had a very big vision
+// This is still far from complete, i couldn't complete it in time (2026/01/31 11:59pm). Partially because i added things the question didn't ask for and got a bit ambitious, almost took it as a passion project
 
 #include <iostream>
 #include <string>
@@ -24,7 +24,7 @@ class book
 			this -> bookTitle = bookTitle;
 			this -> bookAuthor = bookAuthor;
 			this -> bookCopies = bookCopies;
-			bookPrice = 0;
+			bookPrice = 0;  // i set the default price to 0; i.e it is free. below is a setter for price that needs to be called each time price is to be set
 			bookAvailable = true;  // when the object is created it becomes true
 			totalBooks++; // incremented upon instantiation
 			
@@ -73,7 +73,7 @@ class book
 			bookAvailable = true;
 		}
 				
-		void setBookPrice()  // this is also incomplete
+		void setBookPrice()  // this is also incomplete, 
 		{
 			float price;
 			std::cout << "\nEnter the price for the book: ";
@@ -86,6 +86,15 @@ class book
 				std::cin.clear();    // another method inside cin. it sets the state of cin from 'failed' to 'good'
 				std::cin.ignore(64, '\n');  // again, a method. this ignores the input for a given number of characters (1st argument) or until the delimiter character (2nd argument) is encountered
 				std::cin >> price;   // takes input again
+			}
+			
+			while (price < 0)  // Constraint : price cannot be negative
+			{
+				std::cout << "\nInvalid price!\nTry again.\n";
+				
+				std::cin.clear();
+				std::cin.ignore(64, '\n');
+				std::cin >> price;
 			}
 			
 			bookPrice = price;
@@ -193,7 +202,7 @@ class library
 		}
 };
 
-int main()
+int main()  // main() is also incomplete
 {
 	library library1;
 	member member1(1, "Muneeb");
@@ -208,7 +217,7 @@ int main()
 	library1.issueBook(1, book1, member1);
 	library1.displayBooks();
 	
-	library1.bookList[0].setBookPrice();  // cant solve this part on my own due to the time limit. Here, the book instance inside the vector bookList is getting updating, and thats how it should work. The problem is that bookList stores copies of the instances, so the original book instance stays the same. This requires pointers for it to be efficient 
+	library1.bookList[0].setBookPrice();  // cant improve upon this due to the time limit. Here, the book instance inside the vector bookList is getting updating, and thats how it should work. The problem is that bookList stores copies of the instances, so the original book instance stays the same. This requires pointers for it to be efficient 
 	library1.displayBooks();
 	
 }
