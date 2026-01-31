@@ -11,7 +11,7 @@ class book
 		std::string bookTitle;
 		std::string bookAuthor;
 		float bookPrice;
-		static int totalBooks;   // in c++ 17, the keyword 'inline' is introduced. Using that we can define  a static variable in a single line; no need for separate declaration and definition.
+		static inline int totalBooks;   // in c++ 17, the keyword 'inline' is introduced. Using that we can define  a static variable in a single line; no need for separate declaration and definition.
 		
 	public:
 		bool bookAvailable = false;   // book availability flag, false by default for safe-keeping
@@ -68,10 +68,10 @@ class book
 				std::cin >> price;   // takes input again
 			}
 			
-			
+			bookPrice = price;
 		}
 };
-int book::totalBooks = 0;  // definition for static variable
+//int book::totalBooks = 0;  // definition for static variable
 
 
 class member
@@ -79,16 +79,16 @@ class member
 	private:
 		int memberID;
 		std::string memberName;
-		const int booksLimit = 5;
+		const static inline int bookLimit = 5;  // i dont really understand what inline means right now, but it lets me initialize a const static without any headache
 		int booksBorrowed;
 		static int totalMembers;
 		
 	public:
-		member(int memberID, std::string memberName) : booksLimit(5)
+		member(int memberID, std::string memberName)
 		{
 			this -> memberID = memberID;
 			this -> memberName = memberName;
-			totalMembers++;  // when a new object is called,a constructor is called, and when the constructor is called it increments totalMembers by 1
+			totalMembers++;  // when a new object is created, a constructor is called, and when the constructor is called it increments totalMembers by 1
 			booksBorrowed = 0; 
 		}
 		
@@ -112,6 +112,11 @@ class member
 			return booksBorrowed;
 		}
 		
+		static int getBookLimit()  // static function for a static variable
+		{
+			return bookLimit;
+		}
+		
 		void setBooksBorrowed()
 		{
 			booksBorrowed++;
@@ -126,12 +131,12 @@ class library
 		std::vector <member> memberList;
 		std::vector <book> bookList;
 		
-		void addMember(const member &newMember)
+		void addMember(member newMember)
 		{
 			memberList.push_back(newMember);
 		}
 		
-		void addBook(const book &newBook)
+		void addBook(book newBook)
 		{
 			bookList.push_back(newBook);
 		}
@@ -141,7 +146,7 @@ class library
 			std::cout << "Total books in this library: " << book::getTotalBooks() << "\n\n";
 			for (book &i : bookList)
 			{
-				std::cout << i.getBookTitle() << "    |    " << i.getBookAuthor() << "    |    " << i.getBookID() << "    |    $ " << i.getBookPrice() << "\n\n";
+				std::cout << "Title: " << i.getBookTitle() << "    |    Author: " << i.getBookAuthor() << "    |    Book ID:" << i.getBookID() << "    |    Price: $ " << i.getBookPrice() << "\n\n";
 			}
 		}
 		
@@ -150,7 +155,7 @@ class library
 			std::cout << "Total members registered with the library: " << member::getTotalMembers() << "\n\n";
 			
 			for (member &i : memberList)
-				std::cout << i.getMemberName() << "    |    " << i.getMemberID() << "    |    " << i.getBooksBorrowed() << "\n\n";
+				std::cout << "Name: " << i.getMemberName() << "    |    Member ID: " << i.getMemberID() << "    |    Books Borrowed: " << i.getBooksBorrowed() << "\n\n";
 		}
 		
 		void issueBook(int bookIndex, book &Book, member &Member)  // the index of the book in bookList vetcor is passed
@@ -162,7 +167,7 @@ class library
 				return;
 			}
 			
-			else if (Book.bookAvailable && Member.getBooksBorrowed() + 1 <= 5)
+			else if (Book.bookAvailable && Member.getBooksBorrowed() < member::getBookLimit())
 				{
 					Member.setBooksBorrowed();
 					Book.bookCopies--;
@@ -185,7 +190,8 @@ int main()
 	library1.issueBook(1, book1, member1);
 	library1.displayBooks();
 	
-	book1.setBookPrice();
+	library1.bookList[0].setBookPrice();  // cant solve this part on my own due to the time limit. Here, the book instance inside the vector bookList is getting updating, and thats how it should work. The problem is that bookList stores copies of the instances, so the original book instance stays the same. This requires pointers for it to be efficient 
+	library1.displayBooks();
 	
 }
 
