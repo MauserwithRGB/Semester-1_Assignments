@@ -24,7 +24,7 @@ class book
 			this -> bookTitle = bookTitle;
 			this -> bookAuthor = bookAuthor;
 			this -> bookCopies = bookCopies;
-			bookPrice = 0;  // i set the default price to 0; i.e it is free. below is a setter for price that needs to be called each time price is to be set
+			bookPrice = 0;  // i set the default price to 0; i.e it is free and because theres no validation here. below is a setter for price that needs to be called each time price is to be set
 			bookAvailable = true;  // when the object is created it becomes true
 			totalBooks++; // incremented upon instantiation
 			
