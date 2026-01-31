@@ -1,4 +1,5 @@
 // OOP Theory assignment:            create 3 classses, implement everything learned so far
+// This is still far from complete, i couldn't complete it in time (2026/01/31 11:59pm). Partially because i added things the question didn't ask for and had a very big vision
 
 #include <iostream>
 #include <string>
@@ -11,11 +12,12 @@ class book
 		std::string bookTitle;
 		std::string bookAuthor;
 		float bookPrice;
-		static inline int totalBooks;   // in c++ 17, the keyword 'inline' is introduced. Using that we can define  a static variable in a single line; no need for separate declaration and definition.
+		static inline int totalBooks = 0;   // in c++ 17, the keyword 'inline' is introduced. Using that we can define  a static variable in a single line; no need for separate declaration and definition.
+		bool bookAvailable = false;   // book availability flag, false by default for safe-keeping
+		
 		
 	public:
-		bool bookAvailable = false;   // book availability flag, false by default for safe-keeping
-		int bookCopies;    // the total numbe of copies available
+		int bookCopies;    // the total numbe of copies available. I had to make this public because the getter would create issues with line 193; i couldn't decrement. So for the sake of simplicity i chose this way
 		
 		book(int idBook, std::string bookTitle, std::string bookAuthor, int bookCopies) : bookID(idBook)
 		{
@@ -53,7 +55,25 @@ class book
 			return totalBooks;
 		}
 		
-		void setBookPrice()
+		bool isBookAvailable()  //  to check book availability
+		{
+			if (bookAvailable)
+				return true;
+				
+			return false;
+		}
+		
+		void setBookFalse()   // flag for book availability. I also had to make these flags because the private bool bookAvailable creates issues. Before, i had it public
+		{
+			bookAvailable = false;
+		}
+		
+		void setBookTrue()  // flag for book availability.
+		{
+			bookAvailable = true;
+		}
+				
+		void setBookPrice()  // this is also incomplete
 		{
 			float price;
 			std::cout << "\nEnter the price for the book: ";
@@ -71,8 +91,6 @@ class book
 			bookPrice = price;
 		}
 };
-//int book::totalBooks = 0;  // definition for static variable
-
 
 class member
 {
@@ -162,12 +180,12 @@ class library
 		{
 			if (Book.bookCopies == 0)
 			{	
-				Book.bookAvailable = false;
+				Book.setBookFalse();
 				std::cout << "\nBook is not available!";
 				return;
 			}
 			
-			else if (Book.bookAvailable && Member.getBooksBorrowed() < member::getBookLimit())
+			else if (Book.isBookAvailable() && Member.getBooksBorrowed() < member::getBookLimit())
 				{
 					Member.setBooksBorrowed();
 					Book.bookCopies--;
