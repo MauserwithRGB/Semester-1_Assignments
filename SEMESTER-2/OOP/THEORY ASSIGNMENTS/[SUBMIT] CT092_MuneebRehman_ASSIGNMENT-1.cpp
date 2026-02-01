@@ -1,5 +1,4 @@
 // OOP Theory assignment:            create 3 classses, implement everything learned so far
-// This is still far from complete, i couldn't complete it in time (2026/01/31 11:59pm). Partially because i added things the question didn't ask for and got a bit ambitious, almost took it as a passion project
 
 #include <iostream>
 #include <string>
@@ -9,77 +8,20 @@ class book
 {
 	private:
 		const int bookID;
-		std::string bookTitle;
-		std::string bookAuthor;
-		float bookPrice;
+		std::string Title;
+		std::string Author;
+		float Price;
 		static inline int totalBooks = 0;   // in c++ 17, the keyword 'inline' is introduced. Using that we can define  a static variable in a single line; no need for separate declaration and definition.
-		bool bookAvailable = false;   // book availability flag, false by default for safe-keeping
+		int copies;
 		
-		
-	public:
-		int bookCopies;    // the total numbe of copies available. I had to make this public because the getter would create issues with line 193; i couldn't decrement. So for the sake of simplicity i chose this way
-		
-		book(int idBook, std::string bookTitle, std::string bookAuthor, int bookCopies) : bookID(idBook)
-		{
-			this -> bookTitle = bookTitle;
-			this -> bookAuthor = bookAuthor;
-			this -> bookCopies = bookCopies;
-			bookPrice = 0;  // i set the default price to 0; i.e it is free and because theres no validation here. below is a setter for price that needs to be called each time price is to be set
-			bookAvailable = true;  // when the object is created it becomes true
-			totalBooks++; // incremented upon instantiation
-			
-		}
-		
-		int getBookID()
-		{
-			return bookID;
-		}
-		
-		std::string getBookTitle()
-		{
-			return bookTitle;
-		}
-		
-		std::string getBookAuthor()
-		{
-			return bookAuthor;
-		}
-		
-		float getBookPrice()
-		{
-			return bookPrice;
-		}
-		
-		static int getTotalBooks() // static function for a static variable
-		{
-			return totalBooks;
-		}
-		
-		bool isBookAvailable()  //  to check book availability
-		{
-			if (bookAvailable)
-				return true;
-				
-			return false;
-		}
-		
-		void setBookFalse()   // flag for book availability. I also had to make these flags because the private bool bookAvailable creates issues. Before, i had it public
-		{
-			bookAvailable = false;
-		}
-		
-		void setBookTrue()  // flag for book availability.
-		{
-			bookAvailable = true;
-		}
-				
-		void setBookPrice()  // this is also incomplete, 
+		// private methods
+		float inputPrice()
 		{
 			float price;
 			std::cout << "\nEnter the price for the book: ";
 			std::cin >> price;
 			
-			while (std::cin.fail())  // the logic:  inside the cin class, theres a fail() method. Its a bool that returns true if cin failed to stored the value inside the given variable. In this case its a float. If a user enters an alphabet, it will throw an error
+			while (std::cin.fail())  // inside the cin class, theres a fail() method. Its a bool that returns true if cin failed to stored the value inside the given variable. In this case its a float. If a user enters an alphabet, it will throw an error
 			{
 				std::cout << "\nInvalid price!\nTry again.\n";
 				
@@ -97,7 +39,67 @@ class book
 				std::cin >> price;
 			}
 			
-			bookPrice = price;
+			return price;
+		}
+		
+		void setBookPrice(float price)  
+		{
+			this -> Price = price;
+		}
+		
+	public:
+		
+		book(int idBook, std::string Title, std::string Author) : bookID(idBook)
+		{
+			this -> Title = Title;
+			this -> Author = Author;
+			this -> copies = 1;  // set to 1 due to the scope of this question
+			Price = 0;  // i set the default price to 0; i.e it is free and because theres no validation here. below is a setter for price that needs to be called each time price is to be set
+			totalBooks++; // incremented upon instantiation
+			
+		}
+		
+		int getBookID()
+		{
+			return bookID;
+		}
+		
+		std::string getTitle()
+		{
+			return Title;
+		}
+		
+		std::string getAuthor()
+		{
+			return Author;
+		}
+		
+		float getPrice()
+		{
+			return Price;
+		}
+		
+		static int getTotalBooks() // static function for a static variable
+		{
+			return totalBooks;
+		}
+		
+		void setPrice()
+		{
+			setBookPrice(inputPrice());
+		}
+		
+		bool isAvailable()  //  to check book availability
+		{
+			if (copies > 0)
+				return true;
+				
+			return false;
+		}
+		
+		void setNA()
+		{
+			copies = 0;
 		}
 };
 
@@ -105,7 +107,7 @@ class member
 {
 	private:
 		int memberID;
-		std::string memberName;
+		std::string Name;
 		const static inline int bookLimit = 5;
 		int booksBorrowed;
 		static inline int totalMembers = 0;
@@ -114,8 +116,8 @@ class member
 		member(int memberID, std::string memberName)
 		{
 			this -> memberID = memberID;
-			this -> memberName = memberName;
-			totalMembers++;  // increments totalMembers by 1 upon instantiation
+			this -> Name = Name;
+			totalMembers++;  // increments totalMembers upon instantiation
 			booksBorrowed = 0; 
 		}
 		
@@ -124,9 +126,9 @@ class member
 			return memberID;
 		}
 		
-		std::string getMemberName()
+		std::string getName()
 		{
-			return memberName;
+			return Name;
 		}
 		
 		static int getTotalMembers()
@@ -153,51 +155,51 @@ class member
 class library
 {
 	public:
-		std::vector <member*> memberList;
+		std::vector <member*> memberList;  // both these vectors store pointers to the objects. This makes updating their data easier
 		std::vector <book*> bookList;
 		
-		void addMember(member* newMember)
+		void addM(member* newMember)
 		{
 			memberList.push_back(newMember);
 		}
 		
-		void addBook(book* newBook)
+		void addB(book* newBook)
 		{
 			bookList.push_back(newBook);
 		}
 		
-		const void displayBooks()  // needs proper formatting and details
+		const void displayB()
 		{
-			std::cout << "Total books in this library: " << book::getTotalBooks() << "\n\n";
+			std::cout << "\nTotal books in this library: " << book::getTotalBooks() << "\n\n";
 			for (book *i : bookList)
 			{
-				std::cout << "Title: " << i -> getBookTitle() << "    |    Author: " << i -> getBookAuthor() << "    |    Book ID:" << i -> getBookID() << "    |    Price: $ " << i -> getBookPrice() << "\n\n";
+				std::cout << "Title: " << i -> getTitle() << "\t|\tAuthor: " << i -> getAuthor() << "\t|\tBook ID:" << i -> getBookID() << "\t|\tPrice: $ " << i -> getPrice() << "\n\n";
 			}
 		}
 		
-		const void displayMembers()  // needs proper formatting and details
+		const void displayM()
 		{
-			std::cout << "Total members registered with the library: " << member::getTotalMembers() << "\n\n";
+			std::cout << "\nTotal members registered with the library: " << member::getTotalMembers() << "\n\n";
 			
 			for (member* i : memberList)
-				std::cout << "Name: " << i -> getMemberName() << "    |    Member ID: " << i -> getMemberID() << "    |    Books Borrowed: " << i -> getBooksBorrowed() << "\n\n";
+				std::cout << "Name: " << i -> getName() << "\t|\tMember ID: " << i -> getMemberID() << "\t|\tBooks Borrowed: " << i -> getBooksBorrowed() << "\n\n";
 		}
 		
-		void issueBook(/*int bIndex, int mIndex*/book &Book, member &Member)  // the index of the book in bookList, and member in memberList vector is passed
+		void issueB(book &Book, member &Member)
 		{
-//			if (Book.bookCopies == 0)
-//			{	
-//				Book.setBookFalse();
-//				std::cout << "\nBook is not available!";
-//				return;
-//			}
-			
-			if (/*Book.isBookAvailable() && */Member.getBooksBorrowed() < member::getBookLimit())
+			if (Book.isAvailable() && Member.getBooksBorrowed() < member::getBookLimit())
 				{
 					Member.newBookBorrowed();
-					Book.setBookFalse();
-//					Book.bookCopies--; // if time allows, shift to pointers
+					Book.setNA();
 				}
+			else if (!Book.isAvailable())
+				std::cout << "\n" << Book.getTitle() << " is already issued, and is not available, currently.";
+			
+			else if (Member.getBooksBorrowed() == member::getBookLimit())
+				std::cout << "\n" << Member.getName() << " has reached the book borrowing limit.";
+				
+			else
+				std::cout << "\n\nERROR\n\n";
 		}
 };
 
@@ -205,28 +207,19 @@ int main()
 {
 	library library1;
 	member member1(1, "Muneeb");
-	library1.addMember(&member1);
+	library1.addM(&member1);
 	
-	book book1(92, "BOOK1", "AUTHOR1", 3);
-	library1.addBook(&book1);
-
+	book book1(92, "BOOK1", "AUTHOR1");
+	library1.addB(&book1);
 	
-	library1.displayMembers();
+	library1.displayM();
 	
-	library1.issueBook(book1, member1);
-	library1.displayBooks();
+	library1.issueB(book1, member1);
+	library1.displayB();
 	
-	book1.setBookPrice();  // cant improve upon this due to the time limit. Here, the book instance inside the vector bookList is getting updating, and thats how it should work. The problem is that bookList stores copies of the instances, so the original book instance stays the same. This requires pointers for it to be efficient 
-	library1.displayBooks();
+	book1.setPrice();
+	library1.displayB();
 	
-	library1.issueBook(book1, member1);
-	library1.displayMembers();
-	
+	library1.issueB(book1, member1);
+	library1.displayM();
 }
-
-
-
-
-
-
-
