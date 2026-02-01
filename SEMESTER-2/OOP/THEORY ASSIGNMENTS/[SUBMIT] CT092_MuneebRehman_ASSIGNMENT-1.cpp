@@ -1,4 +1,5 @@
 // OOP Theory assignment:            create 3 classses, implement everything learned so far
+// THIS PROGRAM USES C++17. PLEASE ENSURE THAT YOUR COMPILER SUPPORTS IT
 
 #include <iostream>
 #include <string>
@@ -108,7 +109,7 @@ class member
 	private:
 		int memberID;
 		std::string Name;
-		const static inline int bookLimit = 5;
+		const static int bookLimit = 5;
 		int booksBorrowed;
 		static inline int totalMembers = 0;
 		
@@ -192,11 +193,12 @@ class library
 					Member.newBookBorrowed();
 					Book.setNA();
 				}
+				
+			else if (Member.getBooksBorrowed() >= member::getBookLimit())
+				std::cout << "\n" << Member.getName() << " has reached the book borrowing limit.";
+				
 			else if (!Book.isAvailable())
 				std::cout << "\n" << Book.getTitle() << " is already issued, and is not available, currently.";
-			
-			else if (Member.getBooksBorrowed() == member::getBookLimit())
-				std::cout << "\n" << Member.getName() << " has reached the book borrowing limit.";
 				
 			else
 				std::cout << "\n\nERROR\n\n";
