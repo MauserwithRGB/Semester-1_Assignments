@@ -1,5 +1,4 @@
 // OOP Theory assignment:            create 3 classses, implement everything learned so far
-// This is still far from complete, i couldn't complete it in time (2026/01/31 11:59pm). Partially because i added things the question didn't ask for and got a bit ambitious, almost took it as a passion project
 
 #include <iostream>
 #include <string>
@@ -166,7 +165,7 @@ class library
 			bookList.push_back(newBook);
 		}
 		
-		const void displayBooks()  // needs proper formatting and details
+		const void displayBooks()
 		{
 			std::cout << "Total books in this library: " << book::getTotalBooks() << "\n\n";
 			for (book *i : bookList)
@@ -175,7 +174,7 @@ class library
 			}
 		}
 		
-		const void displayMembers()  // needs proper formatting and details
+		const void displayMembers()
 		{
 			std::cout << "Total members registered with the library: " << member::getTotalMembers() << "\n\n";
 			
@@ -196,7 +195,6 @@ class library
 				{
 					Member.newBookBorrowed();
 					Book.setBookFalse();
-//					Book.bookCopies--; // if time allows, shift to pointers
 				}
 		}
 };
@@ -216,7 +214,7 @@ int main()
 	library1.issueBook(book1, member1);
 	library1.displayBooks();
 	
-	book1.setBookPrice();  // cant improve upon this due to the time limit. Here, the book instance inside the vector bookList is getting updating, and thats how it should work. The problem is that bookList stores copies of the instances, so the original book instance stays the same. This requires pointers for it to be efficient 
+	book1.setBookPrice(); 
 	library1.displayBooks();
 	
 	library1.issueBook(book1, member1);
