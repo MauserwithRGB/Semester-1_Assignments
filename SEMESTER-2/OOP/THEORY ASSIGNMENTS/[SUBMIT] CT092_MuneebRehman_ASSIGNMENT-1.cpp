@@ -31,9 +31,9 @@ class book
 				std::cin >> price;   // takes input again
 			}
 			
-			while (price < 0)  // Constraint : price cannot be negative
+			while (price < 0)
 			{
-				std::cout << "\nInvalid price!\nTry again.\n";
+				std::cout << "\nPrice cannot be negative!\nTry again.\n";
 				
 				std::cin.clear();
 				std::cin.ignore(64, '\n');
@@ -85,12 +85,12 @@ class book
 			return totalBooks;
 		}
 		
-		void setPrice()
+		void setPrice() // inputPrice() must be called before setBookPrice(), so in order to ensure the correct call order this new method was created 
 		{
 			setBookPrice(inputPrice());
 		}
 		
-		bool isAvailable()  //  to check book availability
+		bool isAvailable()
 		{
 			if (copies > 0)
 				return true;
@@ -98,7 +98,7 @@ class book
 			return false;
 		}
 		
-		void setNA()
+		void setNA()  // set book status to 'Not Available'
 		{
 			copies = 0;
 		}
@@ -156,8 +156,8 @@ class member
 class library
 {
 	public:
-		std::vector <member*> memberList;  // both these vectors store pointers to the objects. This makes updating their data easier
-		std::vector <book*> bookList;
+		std::vector <member*> memberList;  // vector of pointers to member object
+		std::vector <book*> bookList;      // vector of pointers to book object
 		
 		void addM(member* newMember)
 		{
@@ -238,10 +238,12 @@ int main()
 	library1.displayM();
 	
 	library1.issueB(book1, member1);
+	library1.issueB(book2, member2);
+	
 	library1.displayB();
 	
 	book1.setPrice();
-	library1.displayB();
 	
-	library1.issueB(book1, member1);
+	library1.displayB();
+	library1.displayM();
 }
