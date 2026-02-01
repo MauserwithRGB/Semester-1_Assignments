@@ -44,7 +44,7 @@ class book
 		
 		void setBookPrice(float price)  
 		{
-			this -> Price = price;
+			Price = price;
 		}
 		
 	public:
@@ -113,7 +113,7 @@ class member
 		static inline int totalMembers = 0;
 		
 	public:
-		member(int memberID, std::string memberName)
+		member(int memberID, std::string Name)
 		{
 			this -> memberID = memberID;
 			this -> Name = Name;
@@ -206,11 +206,32 @@ class library
 int main()
 {
 	library library1;
-	member member1(1, "Muneeb");
+	member member1(1000, "John Doe");
 	library1.addM(&member1);
 	
-	book book1(92, "BOOK1", "AUTHOR1");
+	member member2(1001, "John Roe");
+	library1.addM(&member2);
+	
+	member member3(1002, "Jane Doe");
+	library1.addM(&member3);
+	
+	book book1(78000, "BOOK1", "AUTHOR1");
 	library1.addB(&book1);
+	
+	book book2(10032, "BOOK2", "AUTHOR1");
+	library1.addB(&book2);
+	
+	book book3(55864, "BOOK3", "AUTHOR1");
+	library1.addB(&book3);
+	
+	book book4(19872, "BOOK4", "AUTHOR3");
+	library1.addB(&book4);
+	
+	book book5(19871, "BOOK5", "AUTHOR4");
+	library1.addB(&book5);
+	
+	book book6(10087, "BOOK6", "AUTHOR2");
+	library1.addB(&book6);
 	
 	library1.displayM();
 	
@@ -221,5 +242,4 @@ int main()
 	library1.displayB();
 	
 	library1.issueB(book1, member1);
-	library1.displayM();
 }
