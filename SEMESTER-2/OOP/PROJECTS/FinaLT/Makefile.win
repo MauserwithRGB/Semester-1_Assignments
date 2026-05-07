@@ -1,0 +1,46 @@
+# Project: FinaLT
+# Makefile created by Embarcadero Dev-C++ 6.3
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = Budget.o BudgetManager.o Category.o Command.o main.o Utils.o Transactions.o
+LINKOBJ  = Budget.o BudgetManager.o Category.o Command.o main.o Utils.o Transactions.o
+LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc -g3
+INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
+CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
+BIN      = FinaLT.exe
+CXXFLAGS = $(CXXINCS) -std=gnu++17 -g3
+CFLAGS   = $(INCS) -std=gnu++17 -g3
+DEL      = C:\Program Files (x86)\Embarcadero\Dev-Cpp\DevCpp.exe INTERNAL_DEL
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${DEL} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+Budget.o: Budget.cpp
+	$(CPP) -c Budget.cpp -o Budget.o $(CXXFLAGS)
+
+BudgetManager.o: BudgetManager.cpp
+	$(CPP) -c BudgetManager.cpp -o BudgetManager.o $(CXXFLAGS)
+
+Category.o: Category.cpp
+	$(CPP) -c Category.cpp -o Category.o $(CXXFLAGS)
+
+Command.o: Command.cpp
+	$(CPP) -c Command.cpp -o Command.o $(CXXFLAGS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+Utils.o: Utils.cpp
+	$(CPP) -c Utils.cpp -o Utils.o $(CXXFLAGS)
+
+Transactions.o: Transactions.cpp
+	$(CPP) -c Transactions.cpp -o Transactions.o $(CXXFLAGS)
